@@ -9,4 +9,14 @@
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>
 	
+	
+	<servlet>
+		<servlet-name>UserController</servlet-name>
+		<servlet-class>com.aigan.crm.settings.web.controller.UserController</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>UserController</servlet-name>
+		<url-pattern>/settings/user/xx.do</url-pattern>
+	</servlet-mapping>
 </web-app>
