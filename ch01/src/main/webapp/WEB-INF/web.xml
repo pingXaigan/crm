@@ -9,6 +9,15 @@
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>
 	
+	<!--filter加在controller前面-->
+	<filter>
+		<filter-name>EncodingFilter</filter-name>
+		<filter-class>com.aigan.crm.web.filter.EncodingFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>EncodingFilter</filter-name>
+		<url-pattern>*.do</url-pattern>
+	</filter-mapping>
 	
 	<servlet>
 		<servlet-name>UserController</servlet-name>
@@ -17,6 +26,6 @@
 	
 	<servlet-mapping>
 		<servlet-name>UserController</servlet-name>
-		<url-pattern>/settings/user/xx.do</url-pattern>
+		<url-pattern>/settings/user/login.do</url-pattern>
 	</servlet-mapping>
 </web-app>

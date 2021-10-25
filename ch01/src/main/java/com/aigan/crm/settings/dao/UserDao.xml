@@ -3,11 +3,8 @@
 		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.aigan.crm.settings.dao.UserDao">
-	<select id="" resultType="">
-	
+	<select id="login" resultType="com.aigan.crm.settings.domain.User">
+		  select * from tbl_user where loginAct = #{loginAct} and loginPwd = #{loginPwd}
 	</select>
-	
-	<insert id="">
-	
-	</insert>
+
 </mapper>
