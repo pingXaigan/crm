@@ -14,6 +14,10 @@
 
 	<script>
 		$(function () {
+
+			// 防止页面在重启服务器时套娃
+			if(window.top != window) window.top.location = window.location;
+
 			// 页面加载完毕后，将用户文本框中的内容清空
 			$("#loginAct").val("");
 
