@@ -22,12 +22,53 @@ String basePath = request.getScheme() + "://" + request.getServerName()
 	$(function(){
 		// 为创建按钮绑定事件，打开添加操作的模态窗口
 		$("#addBtn").click(function () {
+
+			$(".time").datetimepicker({
+				minView: "month",
+				language:  'zh-CN',
+				format: 'yyyy-mm-dd',
+				autoclose: true,
+				todayBtn: true,
+				pickerPosition: "bottom-left"
+			});
+
 			/*
 				操作模态窗口的方式：
 							需要操作的模态窗口为jQuery对象，调用modal方法，为该方法传递参数 	show：打开模态窗口		hide：关闭模态窗口
 			 */
 			// alert("hello show");
-			$("#createActivityModal").modal("show");
+			// $("#createActivityModal").modal("show");
+
+            // 走后台，为了取得用户信息列表，为所有者下拉框铺值
+            $.ajax({
+                url:"workbench/activity/getUserList.do",
+                data:{
+                    // 选择不填，拿取所有的数据，方便扩充功能
+                },
+                type:"get",
+                dataType:"json",
+                success:function (data) {
+                    /*
+                        data
+                            {{用户1}，{用户2}，……}
+                     */
+                    var html = "<option></option>";
+                    $.each(data,function (i,n) {
+                        html += "<option value='"+n.id+"'>"+n.name+"</option>";
+                    })
+
+                    $("#create-owner").html(html);
+
+                    // 将当前登录的用户设置为下拉框默认的选项
+					var id = "${sessionScope.user.id}";// js中使用EL表达式用引号，否则出问题
+					$("#create-owner").val(id);
+
+                    // 处理完所有者下拉框之后，展示模态窗口
+                    $("#createActivityModal").modal("show");
+                }
+            })
+
+
 		})
 		
 		
@@ -52,12 +93,12 @@ String basePath = request.getScheme() + "://" + request.getServerName()
 					<form class="form-horizontal" role="form">
 					
 						<div class="form-group">
-							<label for="create-marketActivityOwner" class="col-sm-2 control-label">所有者<span style="font-size: 15px; color: red;">*</span></label>
+							<label for="create-owner" class="col-sm-2 control-label">所有者<span style="font-size: 15px; color: red;">*</span></label>
 							<div class="col-sm-10" style="width: 300px;">
-								<select class="form-control" id="create-marketActivityOwner">
-								  <option>zhangsan</option>
-								  <option>lisi</option>
-								  <option>wangwu</option>
+								<select class="form-control" id="create-owner">
+								  <%--<option>zhangsan</option>--%>
+								  <%--<option>lisi</option>--%>
+								  <%--<option>wangwu</option>--%>
 								</select>
 							</div>
                             <label for="create-marketActivityName" class="col-sm-2 control-label">名称<span style="font-size: 15px; color: red;">*</span></label>
@@ -69,11 +110,11 @@ String basePath = request.getScheme() + "://" + request.getServerName()
 						<div class="form-group">
 							<label for="create-startTime" class="col-sm-2 control-label">开始日期</label>
 							<div class="col-sm-10" style="width: 300px;">
-								<input type="text" class="form-control" id="create-startTime">
+								<input type="text" class="form-control time" id="create-startTime" readonly>
 							</div>
 							<label for="create-endTime" class="col-sm-2 control-label">结束日期</label>
 							<div class="col-sm-10" style="width: 300px;">
-								<input type="text" class="form-control" id="create-endTime">
+								<input type="text" class="form-control time" id="create-endTime" readonly>
 							</div>
 						</div>
                         <div class="form-group">

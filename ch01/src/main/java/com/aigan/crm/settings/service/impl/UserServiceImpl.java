@@ -8,6 +8,7 @@ import com.aigan.crm.utils.DateTimeUtil;
 import com.aigan.crm.utils.SqlSessionUtil;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -45,5 +46,12 @@ public class UserServiceImpl implements UserService {
         if(!allowIps.contains(ip)) throw new LoginException("IP已禁止，联系小艾解禁");
 
         return user;
+    }
+
+    @Override
+    public List<User> getUserList() {
+
+        List<User> userList = userDao.getUserList();
+        return userList;
     }
 }
