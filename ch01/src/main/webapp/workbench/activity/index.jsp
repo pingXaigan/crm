@@ -71,9 +71,115 @@ String basePath = request.getScheme() + "://" + request.getServerName()
 
 		})
 		
+		// 为保存按钮绑定事件，执行添加操作
+		$("#saveBtn").click(function () {
+			// alert("savebtn click");
+			$.ajax({
+				url: "workbench/activity/save.do",
+				data: {
+
+					"owner" :	$.trim($("#create-owner").val()),
+					"name" :	$.trim($("#create-name").val()),
+					"startDate" :	$.trim($("#create-startDate").val()),
+					"endDate" :	$.trim($("#create-endDate").val()),
+					"cost" :	$.trim($("#create-cost").val()),
+					"description" :	$.trim($("#create-description").val())
+
+				},
+				type: "post",
+				dataType: "json",
+				success:function (data) {
+					// data		{"success" true/false}
+					if(data.success){
+						// 刷新市场活动列表（局部刷新）
+
+						// 关闭模态窗口之前，将模态窗口中的内容清空
+							/*
+								我们拿到了form表单的jQuery对象，注意：
+									！！！	对于表单的jQuery对象，提供了submit() 让我们重置表单
+											但是没有提供 reset()  这是一个坑 ！！！ idea提示的有，但是不可用
+										但是原生js提供了reset方法，所以我们要将jQuery对象转换为原生dom对象
+
+								jQuery对象转换为DOM对象
+									jquery对象[下标]  （jQuery对象是一个dom类型的数组）
+								DOM对象转换为jQuery对象
+									$(dom)
+							 */
+						$("#activityAddForm")[0].reset();
+
+						// 关闭添加操作的模态窗口
+						$("#createActivityModal").modal("hide");
+
+					}else {
+						alert("添加失败")
+					}
+				}
+			})
+		})
+
+		/*	页面加载完毕后，触发局部刷新
+				1.点击左侧菜单中“市场活动”按钮
+				2.点击 添加，修改，删除
+				3.点查询时
+				4.点击分页组件的时候
+		*/
+
+		// 页面加载完毕时，默认展现第一页
+		pageList(1,2);
+		
+		// 为查询按钮绑定事件，触发pageList方法
+		$("#searchBtn").click(function () {
+			pageList(1,2);
+		})
+		
 		
 	});
-	
+
+	/*
+		发出ajax请求，从后台取得最新的市场活动信息列表
+	*/
+	function pageList(pageNo,pageSize) {
+		$.ajax({
+			url: "workbench/activity/pageList.do",
+			data: {
+				"pageNo" : pageNo,
+				"pageSize" : pageSize,
+				"name" : $.trim($("#search-name").val()),
+				"owner" : $.trim($("#search-owner").val()),
+				"startDate" : $.trim($("#search-startDate").val()),
+				"endDate" : $.trim($("#search-endDate").val())
+			},
+			type: "get",
+			dataType: "json",
+			success:function (data) {
+				/*
+				 我们需要，市场活动信息列表				[{市场活动1}，{2}，{3}……]
+				 分页插件需要知道查询出来的总记录条数  	{“total” ： xxx}
+				 	拼串 	{“total” ： xxx	，“dataList” ：[{市场活动1}，{2}，{3}……]	}
+				  */
+
+				var html = "";
+				
+				$.each(data.dataList,function (i,n) {
+					html += '<tr class="active">';
+					html += '<td><input type="checkbox" value="'+n.id+'" /></td>';
+					html += '<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href=\'workbench/activity/detail.jsp\';">'+n.name+'</a></td>';
+					html += '<td>'+n.owner+'</td>';
+					html += '<td>'+n.startDate+'</td>';
+					html += '<td>'+n.endDate+'</td>';
+					html += '</tr>';
+				})
+
+                $("#activityBody").html(html);
+
+
+
+
+			}
+		})
+
+	}
+
 </script>
 </head>
 <body>
@@ -90,7 +196,7 @@ String basePath = request.getScheme() + "://" + request.getServerName()
 				</div>
 				<div class="modal-body">
 				
-					<form class="form-horizontal" role="form">
+					<form id= "activityAddForm" class="form-horizontal" role="form">
 					
 						<div class="form-group">
 							<label for="create-owner" class="col-sm-2 control-label">所有者<span style="font-size: 15px; color: red;">*</span></label>
@@ -101,20 +207,20 @@ String basePath = request.getScheme() + "://" + request.getServerName()
 								  <%--<option>wangwu</option>--%>
 								</select>
 							</div>
-                            <label for="create-marketActivityName" class="col-sm-2 control-label">名称<span style="font-size: 15px; color: red;">*</span></label>
+                            <label for="create-name" class="col-sm-2 control-label">名称<span style="font-size: 15px; color: red;">*</span></label>
                             <div class="col-sm-10" style="width: 300px;">
-                                <input type="text" class="form-control" id="create-marketActivityName">
+                                <input type="text" class="form-control" id="create-name">
                             </div>
 						</div>
 						
 						<div class="form-group">
-							<label for="create-startTime" class="col-sm-2 control-label">开始日期</label>
+							<label for="create-startDate" class="col-sm-2 control-label">开始日期</label>
 							<div class="col-sm-10" style="width: 300px;">
-								<input type="text" class="form-control time" id="create-startTime" readonly>
+								<input type="text" class="form-control time" id="create-startDate" readonly>
 							</div>
-							<label for="create-endTime" class="col-sm-2 control-label">结束日期</label>
+							<label for="create-endDate" class="col-sm-2 control-label">结束日期</label>
 							<div class="col-sm-10" style="width: 300px;">
-								<input type="text" class="form-control time" id="create-endTime" readonly>
+								<input type="text" class="form-control time" id="create-endDate" readonly>
 							</div>
 						</div>
                         <div class="form-group">
@@ -125,9 +231,9 @@ String basePath = request.getScheme() + "://" + request.getServerName()
                             </div>
                         </div>
 						<div class="form-group">
-							<label for="create-describe" class="col-sm-2 control-label">描述</label>
+							<label for="create-description" class="col-sm-2 control-label">描述</label>
 							<div class="col-sm-10" style="width: 81%;">
-								<textarea class="form-control" rows="3" id="create-describe"></textarea>
+								<textarea class="form-control" rows="3" id="create-description"></textarea>
 							</div>
 						</div>
 						
@@ -136,7 +242,7 @@ String basePath = request.getScheme() + "://" + request.getServerName()
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-					<button type="button" class="btn btn-primary" data-dismiss="modal">保存</button>
+					<button type="button" class="btn btn-primary" id="saveBtn">保存</button>
 				</div>
 			</div>
 		</div>
@@ -226,14 +332,14 @@ String basePath = request.getScheme() + "://" + request.getServerName()
 				  <div class="form-group">
 				    <div class="input-group">
 				      <div class="input-group-addon">名称</div>
-				      <input class="form-control" type="text">
+				      <input class="form-control" type="text" id="search-name">
 				    </div>
 				  </div>
 				  
 				  <div class="form-group">
 				    <div class="input-group">
 				      <div class="input-group-addon">所有者</div>
-				      <input class="form-control" type="text">
+				      <input class="form-control" type="text" id="search-owner">
 				    </div>
 				  </div>
 
@@ -241,17 +347,17 @@ String basePath = request.getScheme() + "://" + request.getServerName()
 				  <div class="form-group">
 				    <div class="input-group">
 				      <div class="input-group-addon">开始日期</div>
-					  <input class="form-control" type="text" id="startTime" />
+					  <input class="form-control" type="text" id="search-startDate" />
 				    </div>
 				  </div>
 				  <div class="form-group">
 				    <div class="input-group">
 				      <div class="input-group-addon">结束日期</div>
-					  <input class="form-control" type="text" id="endTime">
+					  <input class="form-control" type="text" id="search-endDate">
 				    </div>
 				  </div>
 				  
-				  <button type="submit" class="btn btn-default">查询</button>
+				  <button type="button" class="btn btn-default" id="searchBtn">查询</button>
 				  
 				</form>
 			</div>
@@ -285,8 +391,8 @@ String basePath = request.getScheme() + "://" + request.getServerName()
 							<td>结束日期</td>
 						</tr>
 					</thead>
-					<tbody>
-						<tr class="active">
+					<tbody id="activityBody">
+						<%--<tr class="active">
 							<td><input type="checkbox" /></td>
 							<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href='workbench/activity/detail.jsp';">发传单</a></td>
                             <td>zhangsan</td>
@@ -299,7 +405,7 @@ String basePath = request.getScheme() + "://" + request.getServerName()
                             <td>zhangsan</td>
                             <td>2020-10-10</td>
                             <td>2020-10-20</td>
-                        </tr>
+                        </tr>--%>
 					</tbody>
 				</table>
 			</div>
