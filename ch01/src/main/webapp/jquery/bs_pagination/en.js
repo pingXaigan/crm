@@ -13,7 +13,7 @@ var rsc_bs_pag = {
     total_pages_label: 'of',
     total_pages_abbr_label: '/',
     total_rows_label: 'of',
-    rows_info_records: 'records',
+    rows_info_records: '条记录',
     go_top_text: '首页',
     go_prev_text: '上一页',
     go_next_text: '下一页',
