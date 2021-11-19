@@ -5,6 +5,43 @@
 
 <mapper namespace="com.aigan.crm.workbench.dao.CustomerDao">
 	
+	<select id="getCustomerByName" resultType="com.aigan.crm.workbench.domain.Customer">
+		
+		select * from crm.tbl_customer where name=#{company}
+		
+	</select>
+	
+	<insert id="save">
+		
+		insert into crm.tbl_customer(
+		    id,
+			owner,
+			name,
+			website,
+			phone,
+			createBy,
+			createTime,
+			contactSummary,
+			nextContactTime,
+			description,
+			address
+		)
+		values (
+			#{id},
+			#{owner},
+			#{name},
+			#{website},
+			#{phone},
+			#{createBy},
+			#{createTime},
+			#{contactSummary},
+			#{nextContactTime},
+			#{description},
+			#{address}
+		)
+		
+
+	</insert>
   	
 </mapper>
 

@@ -5,8 +5,22 @@
 
 <mapper namespace="com.aigan.crm.workbench.dao.ClueActivityRelationDao">
 	
+	<delete id="unbund">
+		delete from crm.tbl_clue_activity_relation where id = #{id}
+	</delete>
+ 
+	<insert id="bund">
+		insert into crm.tbl_clue_activity_relation(id,clueId,activityId) values (#{id},#{clueId},#{activityId})
+	</insert>
 	
-  	
+	<select id="getListByClueId" resultType="com.aigan.crm.workbench.domain.ClueActivityRelation">
+		select * from crm.tbl_clue_activity_relation where clueId=#{clueId}
+	</select>
+	
+	<delete id="delete">
+		delete from crm.tbl_clue_activity_relation where id=#{id}
+	</delete>
+	
 </mapper>
 
 

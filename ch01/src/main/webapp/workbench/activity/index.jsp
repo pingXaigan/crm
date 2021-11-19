@@ -30,6 +30,7 @@ String basePath = request.getScheme() + "://" + request.getServerName()
 		// 为创建按钮绑定事件，打开添加操作的模态窗口
 		$("#addBtn").click(function () {
 
+			// 日历控件
 			$(".time").datetimepicker({
 				minView: "month",
 				language:  'zh-CN',

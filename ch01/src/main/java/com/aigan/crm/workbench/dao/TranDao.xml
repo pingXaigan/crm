@@ -5,7 +5,46 @@
 
 <mapper namespace="com.aigan.crm.workbench.dao.TranDao">
 	
-  	
+  	<insert id="save">
+	    insert into crm.tbl_tran(
+		    
+		    id,
+			owner,
+			money,
+			name,
+			expectedDate,
+			customerId,
+			stage,
+			type,
+			source,
+			activityId,
+			contactsId,
+			createBy,
+			createTime,
+			description,
+			contactSummary,
+			nextContactTime
+
+	    )
+	    values (
+	    	#{id},
+			#{owner},
+			#{money},
+			#{name},
+			#{expectedDate},
+			#{customerId},
+			#{stage},
+			#{type},
+			#{source},
+			#{activityId},
+			#{contactsId},
+			#{createBy},
+			#{createTime},
+			#{description},
+			#{contactSummary},
+			#{nextContactTime}
+	    )
+    </insert>
 </mapper>
 
 

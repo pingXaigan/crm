@@ -5,7 +5,17 @@
 
 <mapper namespace="com.aigan.crm.workbench.dao.TranHistoryDao">
 	
-  	
+  	<insert id="save">
+	    insert into crm.tbl_tran_history(id, stage, money, expectedDate, createTime, createBy, tranId) VALUES (
+	    	#{id},
+	    	#{stage},
+	    	#{money},
+	    	#{expectedDate},
+	    	#{createTime},
+	    	#{createBy},
+	    	#{tranId}
+	    )
+    </insert>
 </mapper>
 
 

@@ -5,7 +5,11 @@
 
 <mapper namespace="com.aigan.crm.workbench.dao.ContactsActivityRelationDao">
 	
-  	
+ 
+	<insert id="save">
+		insert into crm.tbl_contacts_activity_relation(id, contactsId, activityId) VALUES (#{id},#{contactsId},#{activityId})
+	</insert>
+	
 </mapper>
 
 

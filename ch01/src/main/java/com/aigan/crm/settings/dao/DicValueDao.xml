@@ -3,11 +3,8 @@
 		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.aigan.crm.settings.dao.DicValueDao">
-	<select id="" resultType="">
-	
+	<select id="getListByCode" resultType="com.aigan.crm.settings.domain.DicValue">
+		select * from crm.tbl_dic_value where typeCode=#{code} order by orderNo
 	</select>
 	
-	<insert id="">
-	
-	</insert>
 </mapper>

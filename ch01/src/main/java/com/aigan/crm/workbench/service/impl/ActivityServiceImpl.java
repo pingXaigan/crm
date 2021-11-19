@@ -25,6 +25,29 @@ public class ActivityServiceImpl implements ActivityService {
     private UserDao userDao = SqlSessionUtil.getSqlSession().getMapper(UserDao.class);
 
     @Override
+    public List<Activity> getActivityListByName(String aname) {
+
+        List<Activity> list = activityDao.getActivityListByName(aname);
+
+        return list;
+    }
+
+    @Override
+    public List<Activity> getActivityListByNameAndNoAssociateByClueId(Map<String, String> map) {
+
+        List<Activity> list = activityDao.getActivityListByNameAndNoAssociateByClueId(map);
+        return list;
+    }
+
+    @Override
+    public List<Activity> getActivityListByClueId(String clueId) {
+
+        List<Activity> list = activityDao.getActivityListByClueId(clueId);
+
+        return list;
+    }
+
+    @Override
     public boolean updateRemark(ActivityRemark ar) {
         boolean flag = true;
 

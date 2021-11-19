@@ -5,6 +5,14 @@
 
 <mapper namespace="com.aigan.crm.workbench.dao.ClueRemarkDao">
 	
+	<select id="getListByClueId" resultType="com.aigan.crm.workbench.domain.ClueRemark">
+		select * from crm.tbl_clue_remark where clueId=#{clueId}
+	</select>
+	
+	
+	<delete id="delete">
+		delete from crm.tbl_clue_remark where id=#{id}
+	</delete>
   	
 </mapper>
 

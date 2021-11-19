@@ -9,7 +9,7 @@
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>
 	
-	<!--filter加在controller前面-->
+	<!-- filter 加在 controller 前面-->
 	<filter>
 		<filter-name>EncodingFilter</filter-name>
 		<filter-class>com.aigan.crm.web.filter.EncodingFilter</filter-class>
@@ -28,6 +28,11 @@
 		<url-pattern>*.do</url-pattern>
 		<url-pattern>*.jsp</url-pattern>
 	</filter-mapping>
+	
+	<!-- listener 加在 filter 下面-->
+	<listener>
+		<listener-class>com.aigan.crm.web.listener.SysInitListener</listener-class>
+	</listener>
 	
 	<!--用户控制器-->
 	<servlet>
@@ -66,6 +71,14 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>ClueController</servlet-name>
-		<url-pattern>/workbench/clue/xxx.do</url-pattern>
+		<url-pattern>/workbench/clue/getUserList.do</url-pattern>
+		<url-pattern>/workbench/clue/save.do</url-pattern>
+		<url-pattern>/workbench/clue/detail.do</url-pattern>
+		<url-pattern>/workbench/clue/getActivityListByClueId.do</url-pattern>
+		<url-pattern>/workbench/clue/unbund.do</url-pattern> <!--单词拼错了，懒得改了 unbond -->
+		<url-pattern>/workbench/clue/getActivityListByNameAndNoAssociateByClueId.do</url-pattern>
+		<url-pattern>/workbench/clue/bund.do</url-pattern>
+		<url-pattern>/workbench/clue/getActivityListByName.do</url-pattern>
+		<url-pattern>/workbench/clue/convert.do</url-pattern>
 	</servlet-mapping>
 </web-app>
