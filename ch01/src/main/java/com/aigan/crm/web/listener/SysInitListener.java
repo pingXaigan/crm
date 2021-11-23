@@ -9,8 +9,12 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import java.util.Map;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import java.util.ResourceBundle;
+import java.util.Enumeration;
+
 
 /**
  * @author aigan
@@ -43,5 +47,22 @@ public class SysInitListener implements ServletContextListener {
             application.setAttribute(key,map.get(key));
         }
         System.out.println("数据字典已写入全局作用域对象！");
+
+
+        // --------- Stage2Possibility.properties ----------
+        // 解析 properties 中键值对的关系，处理成java中键值对关系（map）
+        Map<String,String> pMap = new HashMap<>();
+
+        ResourceBundle rb = ResourceBundle.getBundle("Stage2Possibility");
+        Enumeration<String> e = rb.getKeys();
+
+        while(e.hasMoreElements()){
+            String key = e.nextElement();
+            String value = rb.getString(key);
+
+            pMap.put(key,value);
+        }
+        application.setAttribute("pMap",pMap);
+        System.out.println("stage2---写入");
     }
 }
